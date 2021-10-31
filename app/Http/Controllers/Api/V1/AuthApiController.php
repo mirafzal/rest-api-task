@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class AuthController extends Controller
+class AuthApiController extends Controller
 {
     public function register(Request $request)
     {
@@ -36,11 +37,11 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        if (Auth::attempt($data)) {
-            return response(['token' => Auth::user()->createToken('API Token')->plainTextToken]);
+        if (!Auth::attempt($data)) {
+            return response('Credentials not match', Response::HTTP_UNAUTHORIZED);
         }
 
-        return response('Credentials not match', 401);
+        return response(['token' => Auth::user()->createToken('API Token')->plainTextToken]);
     }
 
     public function logout(Request $request) {
