@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AuthApiController;
 use App\Http\Controllers\Api\V1\CategoryApiController;
+use App\Http\Controllers\Api\V1\ProductApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,9 @@ Route::prefix('/v1')->group(function () {
             return $request->user();
         });
 
-        Route::apiResource('categories', CategoryApiController::class);
+        Route::apiResource('/categories', CategoryApiController::class);
+
+        Route::get('/products/search', [ProductApiController::class, 'search']);
+        Route::apiResource('/products', ProductApiController::class);
     });
 });
